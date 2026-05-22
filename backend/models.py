@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field, ConfigDict
 
 
 class CreateEscrowRequest(BaseModel):
-    buyer_email: str
+    # buyer_email is taken from the authenticated session, not the form
     seller_email: str
     amount_usdc: Decimal = Field(gt=0)
     title: str = Field(min_length=1, max_length=200)
