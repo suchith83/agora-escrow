@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: agora-escrow-backend
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    region: oregon
+    pythonVersion: "3.13"
+    envVars:
+      - key: CIRCLE_API_KEY
+        sync: false
+      - key: CIRCLE_ENTITY_SECRET
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: FRONTEND_ORIGIN
+        sync: false       # set this to your Vercel URL after frontend deploys
+      - key: ARC_BLOCKCHAIN
+        value: ARC-TESTNET
+      - key: USDC_CONTRACT_ADDRESS
+        value: "0x3600000000000000000000000000000000000000"
