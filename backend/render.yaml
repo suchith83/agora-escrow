@@ -1,14 +1,15 @@
 services:
   - type: web
     name: agora-escrow-backend
-    env: python
+    runtime: python
     rootDir: backend
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install --upgrade pip && pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     plan: free
     region: oregon
-    pythonVersion: "3.13"
     envVars:
+      - key: PYTHON_VERSION
+        value: "3.13.4"
       - key: CIRCLE_API_KEY
         sync: false
       - key: CIRCLE_ENTITY_SECRET
