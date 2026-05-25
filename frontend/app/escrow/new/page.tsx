@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { useSession } from "@/lib/useSession";
+import { SellerCombobox } from "@/components/SellerCombobox";
 
 export default function NewEscrowPage() {
   const router = useRouter();
@@ -62,23 +63,13 @@ export default function NewEscrowPage() {
       <form onSubmit={submit} className="space-y-4">
         <div>
           <label className="text-sm font-medium block mb-1">Seller email</label>
-          <input
-            type="email"
-            required
-            list="known-emails"
+          <SellerCombobox
             value={form.seller_email}
-            onChange={(e) => update("seller_email", e.target.value)}
-            placeholder="seller@example.com — pick or type a new one"
+            onChange={(v) => update("seller_email", v)}
+            suggestions={knownEmails}
+            excludeEmail={user?.email}
+            placeholder="seller@example.com"
           />
-          <datalist id="known-emails">
-            {knownEmails
-              .filter((p) => p.email !== user?.email)
-              .map((p) => (
-                <option key={p.email} value={p.email}>
-                  {p.display_name || p.email}
-                </option>
-              ))}
-          </datalist>
           <p className="text-xs text-mute mt-1">
             Suggestions come from people already on Agora — but you can invite anyone by typing a new email.
           </p>

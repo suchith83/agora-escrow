@@ -13,7 +13,6 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 
 import { api } from "@/lib/api";
 import { usePresence } from "@/lib/usePresence";
@@ -30,25 +29,25 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="space-y-16">
+    <div className="space-y-20">
       {/* Hero */}
-      <section className="text-center space-y-5 pt-6">
-        <Badge variant="outline" className="mx-auto">
-          Built on Arc · USDC-native · AI-judged
-        </Badge>
-        <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight leading-tight">
-          USDC escrow,{" "}
-          <span className="bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent">
-            judged by AI
-          </span>
-          ,<br className="hidden sm:block" /> settled on Arc in seconds.
+      <section className="text-center space-y-6 pt-8">
+        <div className="text-xs uppercase tracking-[0.2em] text-mute">
+          Built on Arc &nbsp;·&nbsp; USDC-native &nbsp;·&nbsp; AI-judged
+        </div>
+        <h1 className="text-5xl sm:text-6xl font-semibold tracking-tight leading-[1.05] text-ink">
+          USDC escrow.
+          <br />
+          Judged by AI.
+          <br />
+          Settled on Arc in seconds.
         </h1>
-        <p className="text-mute max-w-xl mx-auto">
+        <p className="text-mute max-w-xl mx-auto pt-2">
           Lock USDC into a fresh vault per deal. The seller submits work. A
           Groq-powered judge reads the requirements vs the deliverable and
           auto-releases the funds or refunds — with reasoning you can audit.
         </p>
-        <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-3">
           <Button asChild size="lg">
             <Link href="/escrow/new">
               Create escrow <ArrowRight className="ml-2 h-4 w-4" />
@@ -62,7 +61,7 @@ export default function Home() {
 
       {/* Live metrics */}
       <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <Card>
+        <Card className="shadow-none">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-mute">
               Total users
@@ -70,16 +69,16 @@ export default function Home() {
             <Users className="h-4 w-4 text-mute" />
           </CardHeader>
           <CardContent>
-            <div className="text-3xl font-semibold tabular-nums">
+            <div className="text-4xl font-semibold tabular-nums text-ink">
               {totalUsers === null ? "—" : totalUsers.toLocaleString()}
             </div>
-            <p className="text-xs text-mute mt-1">
+            <p className="text-xs text-mute mt-2">
               Registered profiles on Agora
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="shadow-none">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium text-mute">
               Active now
@@ -92,11 +91,11 @@ export default function Home() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500" />
               </span>
-              <div className="text-3xl font-semibold tabular-nums">
+              <div className="text-4xl font-semibold tabular-nums text-ink">
                 {activeNow || "—"}
               </div>
             </div>
-            <p className="text-xs text-mute mt-1">
+            <p className="text-xs text-mute mt-2">
               People viewing Agora right now
             </p>
           </CardContent>
@@ -104,9 +103,9 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section className="space-y-6">
+      <section className="space-y-8">
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-semibold tracking-tight">
+          <h2 className="text-3xl font-semibold tracking-tight text-ink">
             Three steps. No middlemen.
           </h2>
           <p className="text-mute text-sm">
@@ -114,35 +113,52 @@ export default function Home() {
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card>
+          <Card className="shadow-none">
             <CardHeader>
-              <ShieldCheck className="h-6 w-6 text-blue-600 mb-2" />
-              <CardTitle className="text-base">Lock USDC into a vault</CardTitle>
+              <ShieldCheck className="h-6 w-6 text-ink mb-3" strokeWidth={1.5} />
+              <CardTitle className="text-base flex items-center gap-2">
+                <span className="inline-block h-1.5 w-1.5 bg-amber-500" />
+                Lock USDC into a vault
+              </CardTitle>
             </CardHeader>
-            <CardContent className="text-sm text-mute">
+            <CardContent className="text-sm text-mute leading-relaxed">
               The backend provisions a fresh Circle wallet for every escrow.
               Buyer funds it in one click. Funds sit there until a verdict.
             </CardContent>
           </Card>
-          <Card>
+          <Card className="shadow-none">
             <CardHeader>
-              <Bot className="h-6 w-6 text-violet-600 mb-2" />
-              <CardTitle className="text-base">AI judges the work</CardTitle>
+              <Bot className="h-6 w-6 text-ink mb-3" strokeWidth={1.5} />
+              <CardTitle className="text-base flex items-center gap-2">
+                <span className="inline-block h-1.5 w-1.5 bg-amber-500" />
+                AI judges the work
+              </CardTitle>
             </CardHeader>
-            <CardContent className="text-sm text-mute">
-              Groq <code className="text-xs">llama-3.3-70b</code> reads the
-              buyer’s requirements vs the seller’s deliverable and returns{" "}
-              <code className="text-xs">release</code>,{" "}
-              <code className="text-xs">refund</code>, or{" "}
-              <code className="text-xs">needs_review</code> — with reasoning.
+            <CardContent className="text-sm text-mute leading-relaxed">
+              Groq{" "}
+              <code className="text-xs bg-line/40 px-1 rounded">
+                llama-3.3-70b
+              </code>{" "}
+              reads the buyer’s requirements vs the seller’s deliverable and
+              returns{" "}
+              <code className="text-xs bg-line/40 px-1 rounded">release</code>,{" "}
+              <code className="text-xs bg-line/40 px-1 rounded">refund</code>,
+              or{" "}
+              <code className="text-xs bg-line/40 px-1 rounded">
+                needs_review
+              </code>{" "}
+              — with reasoning.
             </CardContent>
           </Card>
-          <Card>
+          <Card className="shadow-none">
             <CardHeader>
-              <Zap className="h-6 w-6 text-amber-500 mb-2" />
-              <CardTitle className="text-base">Sub-second settlement</CardTitle>
+              <Zap className="h-6 w-6 text-amber-500 mb-3" strokeWidth={1.5} />
+              <CardTitle className="text-base flex items-center gap-2">
+                <span className="inline-block h-1.5 w-1.5 bg-amber-500" />
+                Sub-second settlement
+              </CardTitle>
             </CardHeader>
-            <CardContent className="text-sm text-mute">
+            <CardContent className="text-sm text-mute leading-relaxed">
               Arc Testnet finalizes in &lt; 1s with ~$0.01 fees. The vault
               transfers USDC to the seller (release) or back to the buyer
               (refund) automatically.
@@ -152,8 +168,8 @@ export default function Home() {
       </section>
 
       {/* Footer CTA */}
-      <section className="text-center space-y-4 py-8 border-t border-line">
-        <h2 className="text-xl font-semibold tracking-tight">
+      <section className="text-center space-y-4 py-10 -mx-4 px-4 bg-line/30 rounded-lg">
+        <h2 className="text-2xl font-semibold tracking-tight text-ink">
           Try it with $0.10 of testnet USDC.
         </h2>
         <p className="text-mute text-sm max-w-md mx-auto">

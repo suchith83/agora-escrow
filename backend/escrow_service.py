@@ -474,10 +474,20 @@ def count_profiles() -> int:
     return int(resp.count or 0)
 
 
+_TEST_EMAIL_MARKERS = (
+    "@example.com",
+    "agora-int-",
+    "agora-seller-",
+    "agora-buyer-",
+)
+
+
 def list_profiles_for_picker(limit: int = 200) -> list[dict]:
     """Returns [{email, display_name}] for the seller-email autocomplete.
 
     NOTE: hackathon-only. Exposing all emails publicly is not production-safe.
+    Filters out test/system profiles seeded by integration tests so they
+    don't surface on the live demo.
     """
     sb = get_supabase()
     rows = (
@@ -487,5 +497,8 @@ def list_profiles_for_picker(limit: int = 200) -> list[dict]:
         .limit(limit)
         .execute()
         .data
-    )
-    return rows or []
+    ) or []
+    return [
+        r for r in rows
+        if not any(marker in (r.get("email") or "").lower() for marker in _TEST_EMAIL_MARKERS)
+    ]

@@ -28,6 +28,11 @@ export default function EscrowDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [actionBusy, setActionBusy] = useState<string | null>(null);
+  const [fundCheck, setFundCheck] = useState<{
+    ready: boolean;
+    required: string;
+    current_balance: string;
+  } | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -151,10 +156,17 @@ export default function EscrowDetailPage() {
                 runAction("autofund", async () => {
                   await api.fundFromBuyer(id);
                   await new Promise((r) => setTimeout(r, 4000));
-                  await api.checkFunding(id);
+                  const r = await api.checkFunding(id);
+                  setFundCheck(r.check?.ready === undefined ? null : r.check);
                 })
               }
-              onCheck={() => runAction("fund", () => api.checkFunding(id))}
+              onCheck={() =>
+                runAction("fund", async () => {
+                  const r = await api.checkFunding(id);
+                  setFundCheck(r.check?.ready === undefined ? null : r.check);
+                })
+              }
+              fundCheck={fundCheck}
             />
           ) : (
             <WaitingCard text="Waiting for the buyer to fund the vault." />
@@ -324,6 +336,7 @@ function FundCard({
   actionBusy,
   onAutoFund,
   onCheck,
+  fundCheck,
 }: {
   amount: string;
   vault: string;
@@ -331,6 +344,11 @@ function FundCard({
   actionBusy: string | null;
   onAutoFund: () => void;
   onCheck: () => void;
+  fundCheck: {
+    ready: boolean;
+    required: string;
+    current_balance: string;
+  } | null;
 }) {
   const balance = me?.usdc_balance ? parseFloat(me.usdc_balance) : 0;
   const required = parseFloat(amount);
@@ -387,6 +405,13 @@ function FundCard({
         >
           {actionBusy === "fund" ? "Checking…" : "I’ve sent it — check balance"}
         </button>
+        {fundCheck && !fundCheck.ready && (
+          <div className="text-xs text-red-700 bg-red-50 border border-red-200 rounded p-2 mt-2">
+            Vault has <strong>{fundCheck.current_balance} USDC</strong> — needs{" "}
+            <strong>{fundCheck.required}</strong>. Send the remaining amount and
+            try again.
+          </div>
+        )}
       </div>
     </div>
   );
