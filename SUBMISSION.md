@@ -1,4 +1,4 @@
-# Hackathon Submission Guide — Agora Agents (Circle × Arc)
+# Hackathon Submission Guide — Verdikt (Circle × Arc)
 
 ## What judges score (Canteen rubric)
 
@@ -22,7 +22,7 @@ arc-canteen update-product
 Prep this content to paste:
 
 ```
-Agora — AI-adjudicated USDC escrow on Arc Testnet.
+Verdikt — AI-adjudicated USDC escrow on Arc Testnet.
 
 Two parties lock USDC into an escrow vault (Circle Modular Wallet). Seller submits a deliverable.
 Gemini 2.0 Flash reads the buyer's requirements vs the deliverable and returns
@@ -72,7 +72,7 @@ Per CLAUDE.md, the portal URL isn't published yet — aadi said it'd appear in t
 - `arc-canteen status` to see whether the CLI has a pointer
 
 Typical hackathon portals want:
-- **Project name:** Agora
+- **Project name:** Verdikt
 - **One-liner:** "AI-adjudicated USDC escrow on Arc"
 - **Demo URL:** your Vercel link
 - **Source URL:** your GitHub link

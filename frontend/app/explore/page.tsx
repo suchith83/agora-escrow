@@ -22,7 +22,7 @@ export default function ExplorePage() {
       <section>
         <h1 className="text-2xl font-semibold tracking-tight mb-1">Live escrows</h1>
         <p className="text-mute text-sm">
-          Every escrow created on Agora, newest first. Click any to see the
+          Every escrow created on Verdikt, newest first. Click any to see the
           on-chain transfers and the AI judge’s reasoning.
         </p>
       </section>

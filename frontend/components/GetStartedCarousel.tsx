@@ -49,7 +49,7 @@ export const GET_STARTED_STEPS: GetStartedStep[] = [
     n: 3,
     title: "Create an escrow",
     description:
-      "Pick seller, amount, title, and requirements. Agora creates a dedicated vault wallet.",
+      "Pick seller, amount, title, and requirements. Verdikt creates a dedicated vault wallet.",
     icon: PenLine,
     href: "/escrow/new",
     linkLabel: "New escrow",
@@ -171,20 +171,30 @@ export function GetStartedCarousel() {
   const [activeIndex, setActiveIndex] = useState(0);
   const stepCount = GET_STARTED_STEPS.length;
 
-  const scrollToIndex = useCallback((index: number) => {
-    const container = scrollRef.current;
-    if (!container) return;
-    const targets = container.querySelectorAll<HTMLElement>("[data-snap-step]");
-    const el = targets[index];
-    if (el) {
-      el.scrollIntoView({
-        behavior: "smooth",
-        inline: "center",
-        block: "nearest",
-      });
-    }
-    setActiveIndex(index);
-  }, []);
+  const centerStepInContainer = useCallback(
+    (container: HTMLDivElement, el: HTMLElement) => {
+      const containerRect = container.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      const scrollLeft =
+        container.scrollLeft +
+        (elRect.left + elRect.width / 2) -
+        (containerRect.left + container.clientWidth / 2);
+      container.scrollTo({ left: scrollLeft, behavior: "smooth" });
+    },
+    []
+  );
+
+  const scrollToIndex = useCallback(
+    (index: number) => {
+      const container = scrollRef.current;
+      if (!container) return;
+      const targets = container.querySelectorAll<HTMLElement>("[data-snap-step]");
+      const el = targets[index];
+      if (el) centerStepInContainer(container, el);
+      setActiveIndex(index);
+    },
+    [centerStepInContainer]
+  );
 
   useEffect(() => {
     const id = window.setInterval(() => {
@@ -195,17 +205,14 @@ export function GetStartedCarousel() {
           const targets = container.querySelectorAll<HTMLElement>(
             "[data-snap-step]"
           );
-          targets[next]?.scrollIntoView({
-            behavior: "smooth",
-            inline: "center",
-            block: "nearest",
-          });
+          const el = targets[next];
+          if (el) centerStepInContainer(container, el);
         }
         return next;
       });
     }, 5000);
     return () => window.clearInterval(id);
-  }, [stepCount]);
+  }, [stepCount, centerStepInContainer]);
 
   useEffect(() => {
     const container = scrollRef.current;

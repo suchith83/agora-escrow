@@ -1,4 +1,4 @@
-# Agora — Current Features & What's Built
+# Verdikt — Current Features & What's Built
 
 > Teammate-facing snapshot of what the app actually does today, so we can decide
 > what to harden vs. what to add next for the Agora Agents Hackathon judging

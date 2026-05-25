@@ -75,7 +75,7 @@ export default function Home() {
               {totalUsers === null ? "—" : totalUsers.toLocaleString()}
             </div>
             <p className="text-xs text-mute mt-2">
-              Registered profiles on Agora
+              Registered profiles on Verdikt
             </p>
           </CardContent>
         </Card>
@@ -98,7 +98,7 @@ export default function Home() {
               </div>
             </div>
             <p className="text-xs text-mute mt-2">
-              People viewing Agora right now
+              People viewing Verdikt right now
             </p>
           </CardContent>
         </Card>

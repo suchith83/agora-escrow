@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api, statusPillClass, type Escrow } from "@/lib/api";
 import { useSession } from "@/lib/useSession";
+import CopyableAddress from "@/components/CopyableAddress";
+import TopUpGuide from "@/components/TopUpGuide";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -46,25 +48,30 @@ export default function DashboardPage() {
       </div>
 
       {me && (
-        <div className="card grid grid-cols-2 gap-4 text-sm">
-          <div>
-            <div className="text-mute text-xs">Your Agora wallet</div>
-            <code className="text-xs break-all">{me.circle_wallet_address || "not created yet — make your first escrow"}</code>
-          </div>
-          <div className="text-right">
-            <div className="text-mute text-xs">Balance</div>
-            <div className="text-lg font-medium">{me.usdc_balance ?? "0"} USDC</div>
+        <div className="space-y-4">
+          <div className="card space-y-3">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <div className="text-mute text-xs">Your Verdikt wallet</div>
+                {!me.circle_wallet_address && (
+                  <p className="text-sm text-mute mt-1">
+                    Not created yet — it gets created when you make your first escrow.
+                  </p>
+                )}
+              </div>
+              <div className="text-right shrink-0">
+                <div className="text-mute text-xs">Balance</div>
+                <div className="text-lg font-medium">{me.usdc_balance ?? "0"} USDC</div>
+              </div>
+            </div>
             {me.circle_wallet_address && (
-              <a
-                className="text-xs text-accent hover:underline"
-                href="https://faucet.circle.com"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Top up via faucet →
-              </a>
+              <CopyableAddress address={me.circle_wallet_address} />
             )}
           </div>
+
+          {me.circle_wallet_address && (
+            <TopUpGuide walletAddress={me.circle_wallet_address} />
+          )}
         </div>
       )}
 

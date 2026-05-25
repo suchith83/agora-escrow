@@ -1,5 +1,5 @@
 """
-FastAPI app — Agora AI Escrow backend.
+FastAPI app — Verdikt AI Escrow backend.
 
 Run:
     cd backend && source .venv/bin/activate
@@ -23,7 +23,7 @@ from models import (
 )
 
 
-app = FastAPI(title="Agora AI Escrow", version="0.2.0")
+app = FastAPI(title="Verdikt AI Escrow", version="0.2.0")
 
 settings = get_settings()
 app.add_middleware(

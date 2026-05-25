@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Agora — AI Escrow on Arc",
+  title: "Verdikt — AI Escrow on Arc",
   description: "USDC escrow with an AI judge, settled on Arc testnet in seconds.",
 };
 
@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="border-b border-line">
           <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
             <Link href="/" className="font-semibold tracking-tight">
-              Agora <span className="text-mute font-normal">· AI Escrow</span>
+              Verdikt <span className="text-mute font-normal">· AI Escrow</span>
             </Link>
             <HeaderNav />
           </div>

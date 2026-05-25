@@ -45,7 +45,7 @@ export default function LoginPage() {
   return (
     <div className="card max-w-md mx-auto space-y-4">
       <div>
-        <h1 className="text-xl font-semibold">Sign in to Agora</h1>
+        <h1 className="text-xl font-semibold">Sign in to Verdikt</h1>
         <p className="text-sm text-mute mt-1">
           One-tap magic link. No passwords.
         </p>

@@ -11,6 +11,8 @@ import {
   type Judgment,
 } from "@/lib/api";
 import { useSession } from "@/lib/useSession";
+import CopyableAddress from "@/components/CopyableAddress";
+import TopUpGuide from "@/components/TopUpGuide";
 
 const ARC_EXPLORER = "https://testnet.arcscan.app/address";
 const ARC_TX = "https://testnet.arcscan.app/tx";
@@ -123,18 +125,18 @@ export default function EscrowDetailPage() {
 
       <section className="card space-y-2">
         <div className="text-sm font-medium">Vault address</div>
-        <code className="block text-xs break-all bg-line/30 p-2 rounded">
-          {escrow.circle_escrow_wallet_address}
-        </code>
         {escrow.circle_escrow_wallet_address && (
-          <a
-            className="text-xs text-accent hover:underline"
-            href={`${ARC_EXPLORER}/${escrow.circle_escrow_wallet_address}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            View on Arc explorer →
-          </a>
+          <>
+            <CopyableAddress address={escrow.circle_escrow_wallet_address} />
+            <a
+              className="text-xs text-accent hover:underline"
+              href={`${ARC_EXPLORER}/${escrow.circle_escrow_wallet_address}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              View on Arc explorer →
+            </a>
+          </>
         )}
       </section>
 
@@ -358,31 +360,20 @@ function FundCard({
     <div className="card space-y-4">
       <div className="text-sm font-medium">Step 1 — Fund the vault ({amount} USDC)</div>
 
-      <div className="space-y-2">
+      <div className="space-y-3">
         <div className="text-sm font-semibold">Option A — Fund from your wallet (one-click)</div>
-        <div className="text-xs text-mute space-y-1">
-          <div>
-            Your wallet:{" "}
-            <code className="text-ink">{me?.circle_wallet_address || "—"}</code>
-          </div>
-          <div>
-            Balance:{" "}
-            <span className={hasEnough ? "text-green-700" : "text-red-700"}>
-              {me?.usdc_balance ?? "—"} USDC
-            </span>{" "}
-            · need {amount}
-          </div>
-          {!hasEnough && me?.circle_wallet_address && (
-            <a
-              className="text-accent hover:underline inline-block mt-1"
-              href={`https://faucet.circle.com`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              Top up via faucet → paste {me.circle_wallet_address}
-            </a>
-          )}
+        <div className="flex items-center justify-between text-sm">
+          <span className="text-mute">Your balance:</span>
+          <span className={`font-medium ${hasEnough ? "text-green-700" : "text-red-700"}`}>
+            {me?.usdc_balance ?? "0"} USDC
+            <span className="text-mute font-normal"> · need {amount}</span>
+          </span>
         </div>
+
+        {!hasEnough && me?.circle_wallet_address && (
+          <TopUpGuide walletAddress={me.circle_wallet_address} />
+        )}
+
         <button
           className="btn-primary"
           disabled={actionBusy === "autofund" || !hasEnough}
@@ -397,7 +388,7 @@ function FundCard({
         <p className="text-xs text-mute">
           Send {amount} USDC on Arc Testnet from any wallet to the vault address:
         </p>
-        <code className="block text-xs break-all bg-line/30 p-2 rounded">{vault}</code>
+        <CopyableAddress address={vault} />
         <button
           className="btn-outline"
           disabled={actionBusy === "fund"}

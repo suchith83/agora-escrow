@@ -71,7 +71,7 @@ export default function NewEscrowPage() {
             placeholder="seller@example.com"
           />
           <p className="text-xs text-mute mt-1">
-            Suggestions come from people already on Agora — but you can invite anyone by typing a new email.
+            Suggestions come from people already on Verdikt — but you can invite anyone by typing a new email.
           </p>
         </div>
 
@@ -95,7 +95,7 @@ export default function NewEscrowPage() {
             maxLength={200}
             value={form.title}
             onChange={(e) => update("title", e.target.value)}
-            placeholder="e.g. Logo design for AgoraPay"
+            placeholder="e.g. Logo design for my startup"
           />
         </div>
 

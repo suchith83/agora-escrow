@@ -1,4 +1,4 @@
-# Agora — AI-Adjudicated USDC Escrow on Arc
+# Verdikt — AI-Adjudicated USDC Escrow on Arc
 
 **Hackathon submission for the Agora Agents Hackathon (Circle × Arc).**
 
@@ -39,7 +39,7 @@ See [PROGRESS.md](PROGRESS.md) for the detailed build log.
 ## Repo layout
 
 ```
-Agora/
+Verdikt/
 ├── README.md                    ← you are here
 ├── PROGRESS.md                  ← detailed phase-by-phase build log + test results
 ├── CLAUDE.md                    ← agent-facing context (for Claude Code)
