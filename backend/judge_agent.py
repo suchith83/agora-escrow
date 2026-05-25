@@ -1,7 +1,5 @@
 """
-AI Judge — Gemini 2.0 Flash with structured JSON output.
-
-Uses the new `google-genai` SDK (not the older `google-generativeai`).
+AI Judge — Groq (llama-3.3-70b-versatile) with JSON-mode structured output.
 
 Given a buyer's requirements (markdown) and a seller's deliverable (text or URL),
 returns a verdict + reasoning + confidence score.
@@ -12,13 +10,12 @@ import json
 from functools import lru_cache
 from typing import Optional, TypedDict
 
-from google import genai
-from google.genai import types as genai_types
+from groq import Groq
 
 from config import get_settings
 
 
-MODEL_NAME = "gemini-2.0-flash"
+MODEL_NAME = "llama-3.3-70b-versatile"
 
 
 class JudgeResult(TypedDict):
@@ -69,11 +66,11 @@ _RESPONSE_SCHEMA = {
 
 
 @lru_cache
-def _client() -> genai.Client:
+def _client() -> Groq:
     s = get_settings()
-    if not s.gemini_api_key:
-        raise RuntimeError("GEMINI_API_KEY is not set in .env")
-    return genai.Client(api_key=s.gemini_api_key)
+    if not s.groq_api_key:
+        raise RuntimeError("GROQ_API_KEY is not set in .env")
+    return Groq(api_key=s.groq_api_key)
 
 
 def judge(
@@ -99,23 +96,20 @@ def judge(
     user_prompt = (
         f"## Buyer requirements\n\n{requirements_md}\n\n"
         + "\n\n".join(deliverable_block)
-        + "\n\nJudge this submission. Respond with JSON only."
+        + f"\n\nRespond with JSON matching this schema:\n{json.dumps(_RESPONSE_SCHEMA)}\n\nJSON only."
     )
 
-    config = genai_types.GenerateContentConfig(
-        system_instruction=_SYSTEM_PROMPT,
-        response_mime_type="application/json",
-        response_schema=_RESPONSE_SCHEMA,
+    response = _client().chat.completions.create(
+        model=MODEL_NAME,
+        messages=[
+            {"role": "system", "content": _SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt},
+        ],
+        response_format={"type": "json_object"},
         temperature=0.2,
     )
 
-    response = _client().models.generate_content(
-        model=MODEL_NAME,
-        contents=user_prompt,
-        config=config,
-    )
-
-    raw = (response.text or "").strip()
+    raw = (response.choices[0].message.content or "").strip()
     parsed = json.loads(raw)
 
     # Defensive clamping

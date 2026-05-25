@@ -6,5 +6,5 @@ pydantic-settings>=2.7.0
 httpx>=0.28.1
 circle-developer-controlled-wallets==9.3.3
 supabase>=2.15.0
-google-genai==2.5.0
+groq>=0.13.0
 PyJWT[crypto]>=2.10.1

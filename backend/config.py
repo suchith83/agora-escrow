@@ -23,7 +23,7 @@ class Settings:
         self.arc_blockchain = os.environ.get("ARC_BLOCKCHAIN", "ARC-TESTNET")
         self.supabase_url = os.environ.get("SUPABASE_URL") or os.environ.get("NEXT_PUBLIC_SUPABASE_URL", "")
         self.supabase_service_key = os.environ.get("SUPABASE_SERVICE_ROLE_KEY", "")
-        self.gemini_api_key = os.environ.get("GEMINI_API_KEY", "")
+        self.groq_api_key = os.environ.get("GROQ_API_KEY", "")
         self.frontend_origin = os.environ.get("FRONTEND_ORIGIN", "http://localhost:3001")
 
 
