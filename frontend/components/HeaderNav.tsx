@@ -21,6 +21,9 @@ export function HeaderNav() {
       <Link href="/escrow/new" className="hover:underline">
         New escrow
       </Link>
+      <Link href="/explore" className="hover:underline">
+        Explore
+      </Link>
       <Link href="/dashboard" className="hover:underline">
         Dashboard
       </Link>

@@ -187,3 +187,19 @@ def my_escrows(user: dict = Depends(current_user)):
 def list_escrows(limit: int = 20):
     """Public feed — anyone can browse."""
     return {"escrows": escrow_service.list_recent_escrows(limit=limit)}
+
+
+@app.get("/metrics/users-total")
+def metrics_users_total():
+    """Public — total registered profiles. Used by the landing-page metrics card."""
+    return {"total": escrow_service.count_profiles()}
+
+
+@app.get("/profiles")
+def list_profiles_endpoint(limit: int = 200):
+    """Public list of profile emails — for the seller-email autocomplete.
+
+    NOTE: hackathon-only. In production, gate this by auth or limit to
+    people the caller has interacted with.
+    """
+    return {"profiles": escrow_service.list_profiles_for_picker(limit=limit)}

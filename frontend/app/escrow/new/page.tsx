@@ -16,10 +16,18 @@ export default function NewEscrowPage() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [knownEmails, setKnownEmails] = useState<{ email: string; display_name: string | null }[]>([]);
 
   useEffect(() => {
     if (!authLoading && !user) router.push("/login");
   }, [authLoading, user, router]);
+
+  useEffect(() => {
+    api
+      .listProfiles()
+      .then((d) => setKnownEmails(d.profiles))
+      .catch(() => setKnownEmails([]));
+  }, []);
 
   function update<K extends keyof typeof form>(key: K, value: string) {
     setForm((f) => ({ ...f, [key]: value }));
@@ -57,10 +65,23 @@ export default function NewEscrowPage() {
           <input
             type="email"
             required
+            list="known-emails"
             value={form.seller_email}
             onChange={(e) => update("seller_email", e.target.value)}
-            placeholder="seller@example.com"
+            placeholder="seller@example.com — pick or type a new one"
           />
+          <datalist id="known-emails">
+            {knownEmails
+              .filter((p) => p.email !== user?.email)
+              .map((p) => (
+                <option key={p.email} value={p.email}>
+                  {p.display_name || p.email}
+                </option>
+              ))}
+          </datalist>
+          <p className="text-xs text-mute mt-1">
+            Suggestions come from people already on Agora — but you can invite anyone by typing a new email.
+          </p>
         </div>
 
         <div>

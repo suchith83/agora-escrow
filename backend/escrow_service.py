@@ -466,3 +466,26 @@ def list_recent_escrows(limit: int = 20) -> list:
         .execute()
         .data
     )
+
+
+def count_profiles() -> int:
+    sb = get_supabase()
+    resp = sb.table("profiles").select("id", count="exact").limit(1).execute()
+    return int(resp.count or 0)
+
+
+def list_profiles_for_picker(limit: int = 200) -> list[dict]:
+    """Returns [{email, display_name}] for the seller-email autocomplete.
+
+    NOTE: hackathon-only. Exposing all emails publicly is not production-safe.
+    """
+    sb = get_supabase()
+    rows = (
+        sb.table("profiles")
+        .select("email, display_name")
+        .order("created_at", desc=True)
+        .limit(limit)
+        .execute()
+        .data
+    )
+    return rows or []

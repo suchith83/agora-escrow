@@ -126,6 +126,15 @@ export const api = {
       blockchain?: string;
       [k: string]: any;
     }>(`/transaction/${txId}`, { auth: false }),
+
+  metricsUsersTotal: () =>
+    call<{ total: number }>("/metrics/users-total", { auth: false }),
+
+  listProfiles: () =>
+    call<{ profiles: { email: string; display_name: string | null }[] }>(
+      "/profiles",
+      { auth: false }
+    ),
 };
 
 export type EscrowStatus =
